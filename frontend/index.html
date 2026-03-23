@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pathology Analyzer - Upload</title>
+    <link rel="stylesheet" href="/static/styles/base.css?v=5" />
+    <link rel="stylesheet" href="/static/styles/upload.css?v=5" />
+  </head>
+  <body class="upload-screen">
+    <main class="upload-shell">
+      <section class="upload-hero">
+        <p class="product-badge">Pathology Analyzer</p>
+        <h1>
+          Upload your
+          <span>Pathology Report</span>
+        </h1>
+        <p class="hero-copy">
+          Upload a single PDF report. Analysis is generated automatically, then you proceed to
+          detailed results and export.
+        </p>
+
+        <div class="progress-track" aria-label="Upload progress">
+          <div class="track-step current">
+            <span class="step-dot">1</span>
+            <span class="step-label">Upload Report</span>
+          </div>
+          <div class="track-line"></div>
+          <div class="track-step">
+            <span class="step-dot">2</span>
+            <span class="step-label">Analysis</span>
+          </div>
+          <div class="track-line"></div>
+          <div class="track-step">
+            <span class="step-dot">3</span>
+            <span class="step-label">Results &amp; Export</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel upload-card">
+        <form id="uploadForm" class="upload-form">
+          <p class="step-tag">Step 1</p>
+          <h2>Choose your PDF file</h2>
+
+          <input id="pdfFile" name="file" type="file" accept=".pdf" required />
+          <label for="pdfFile" class="drop-zone">
+            <span class="upload-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img" width="34" height="34">
+                <path
+                  d="M12 16V5M12 5L7.5 9.5M12 5L16.5 9.5M5 14.5V18.5C5 19.6 5.9 20.5 7 20.5H17C18.1 20.5 19 19.6 19 18.5V14.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <strong id="filePrompt">Drag &amp; drop your PDF here</strong>
+            <span>or <b>browse to upload</b> &middot; PDF only</span>
+          </label>
+
+          <div class="status-line">
+            <span></span>
+            <p id="statusText" class="status-text">Ready to analyze</p>
+            <span></span>
+          </div>
+
+          <button id="submitButton" type="submit">Analyze and Continue</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="/static/scripts/upload-page.js?v=5"></script>
+  </body>
+</html>

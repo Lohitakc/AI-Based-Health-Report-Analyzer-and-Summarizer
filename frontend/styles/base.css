@@ -1,0 +1,142 @@
+:root {
+  --bg: #f0f5fb;
+  --ink: #11243a;
+  --muted: #49627a;
+  --panel: #ffffff;
+  --line: #d4dfec;
+  --accent: #0f6fb2;
+  --accent-strong: #0d578a;
+  --danger: #b42318;
+  --warning: #c76310;
+  --safe: #1f8a4d;
+  --shadow: 0 14px 30px rgba(17, 36, 58, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Poppins", "Nunito Sans", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(15, 111, 178, 0.14), transparent 38%),
+    radial-gradient(circle at 100% 0%, rgba(45, 131, 198, 0.12), transparent 30%),
+    var(--bg);
+}
+
+.page-shell {
+  width: min(1060px, 94%);
+  margin: 2rem auto 3rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.hero-card {
+  background: linear-gradient(130deg, #e8f3ff, #f8fbff);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 1.35rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.hero-card h1 {
+  margin: 0.12rem 0 0.2rem;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #2d5f84;
+}
+
+.subtext {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.1rem 1.2rem;
+  box-shadow: var(--shadow);
+}
+
+.warning {
+  border-color: #f2d7af;
+  background: #fff8ed;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+button,
+.link-btn {
+  border: none;
+  border-radius: 11px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.65rem 1.02rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover:not(:disabled),
+.link-btn:hover {
+  background: var(--accent-strong);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  background: #e9f3ff;
+  color: #0e4f7e;
+  border: 1px solid #bed8f1;
+}
+
+.secondary-btn:hover:not(:disabled) {
+  background: #dceeff;
+}
+
+.ghost-link {
+  color: #175b8d;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ghost-link:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 780px) {
+  .page-shell {
+    width: 95%;
+    margin-top: 1.2rem;
+  }
+}

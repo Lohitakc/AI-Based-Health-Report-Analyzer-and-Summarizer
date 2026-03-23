@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pathology Analyzer - Report</title>
+    <link rel="stylesheet" href="/static/styles/base.css?v=5" />
+    <link rel="stylesheet" href="/static/styles/report.css?v=5" />
+  </head>
+  <body class="report-screen">
+    <main class="report-shell">
+      <section class="report-top">
+        <div>
+          <p class="product-badge">Pathology Analyzer</p>
+          <h1 class="report-title">
+            Analysis
+            <span>Summary</span>
+          </h1>
+          <p class="subtext">Review findings, patient explanation, doctor view, and export PDF.</p>
+        </div>
+
+        <div class="top-actions">
+          <button id="downloadPdfButton" type="button" class="download-btn">Download PDF</button>
+          <a href="/" class="back-btn">Analyze another report</a>
+        </div>
+      </section>
+
+      <section id="emptyState" class="panel hidden">
+        <h2>No analysis found</h2>
+        <p>Please upload a report from the first page before opening this page.</p>
+        <a href="/" class="link-btn">Go to Upload Page</a>
+      </section>
+
+      <section id="reportContent" class="hidden">
+        <section id="statsGrid" class="stats-grid"></section>
+
+        <section class="panel tab-panel">
+          <div class="tab-header">
+            <button class="tab-btn active" data-tab-target="analysisTab" type="button">Analysis Table</button>
+            <button class="tab-btn" data-tab-target="patientTab" type="button">Patient Summary</button>
+            <button class="tab-btn" data-tab-target="doctorTab" type="button">Doctor Summary</button>
+          </div>
+
+          <div class="tab-body">
+            <section id="analysisTab" class="tab-pane active">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Value</th>
+                      <th>Normal Range</th>
+                      <th>Status</th>
+                      <th>Range Source</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resultRows"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section id="patientTab" class="tab-pane">
+              <div id="patientView"></div>
+            </section>
+
+            <section id="doctorTab" class="tab-pane">
+              <div id="doctorView"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="disclaimerSection" class="panel disclaimer-panel">
+          <p id="disclaimerText" class="disclaimer-text"></p>
+        </section>
+      </section>
+    </main>
+
+    <script src="/static/scripts/report-page.js?v=5"></script>
+  </body>
+</html>

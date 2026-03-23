@@ -1,0 +1,29 @@
+Hemoglobin (adult male) | range: 13.0 - 17.0 g/dL | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/complete-blood-count/about/pac-20384919
+RBC (adult male) | range: 4.5 - 5.9 million/uL | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/complete-blood-count/about/pac-20384919
+WBC | range: 4.0 - 11.0 x10^3/uL | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/complete-blood-count/about/pac-20384919
+Platelets | range: 150.0 - 450.0 x10^3/uL | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/complete-blood-count/about/pac-20384919
+MCV | range: 80.0 - 100.0 fL | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/complete-blood-count/about/pac-20384919
+MCH | range: 27.0 - 33.0 pg | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/complete-blood-count/about/pac-20384919
+Neutrophils | range: 40.0 - 70.0 % | source: NHS | url: https://www.nhs.uk/conditions/blood-tests/
+Lymphocytes | range: 20.0 - 40.0 % | source: NHS | url: https://www.nhs.uk/conditions/blood-tests/
+Fasting Glucose | range: 70.0 - 100.0 mg/dL | source: CDC | url: https://www.cdc.gov/diabetes/diabetes-testing/index.html
+Postprandial Glucose | range: 120.0 - 160.0 mg/dL | source: NHS | url: https://www.nhs.uk/conditions/type-2-diabetes/
+Random Glucose | range: 70.0 - 140.0 mg/dL | source: CDC | url: https://www.cdc.gov/diabetes/diabetes-testing/index.html
+Urea / BUN | range: 7.0 - 20.0 mg/dL | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/blood-urea-nitrogen/about/pac-20384921
+Creatinine | range: 0.74 - 1.35 mg/dL | source: NHS | url: https://www.nhs.uk/conditions/kidney-disease/diagnosis/
+Bilirubin | range: 0.1 - 1.2 mg/dL | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/liver-function-tests/about/pac-20394595
+AST | range: 10.0 - 40.0 U/L | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/liver-function-tests/about/pac-20394595
+ALT | range: 7.0 - 56.0 U/L | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/liver-function-tests/about/pac-20394595
+ALP | range: 44.0 - 147.0 U/L | source: Mayo Clinic | url: https://www.mayoclinic.org/tests-procedures/liver-function-tests/about/pac-20394595
+GGT | range: 9.0 - 48.0 U/L | source: NHS | url: https://www.nhs.uk/conditions/liver-disease/
+Cholesterol | range: 125.0 - 200.0 mg/dL | source: CDC | url: https://www.cdc.gov/cholesterol/prevention/index.html
+LDL | range: 0.0 - 100.0 mg/dL | source: CDC | url: https://www.cdc.gov/cholesterol/prevention/index.html
+HDL | range: 40.0 - 90.0 mg/dL | source: CDC | url: https://www.cdc.gov/cholesterol/prevention/index.html
+Triglycerides | range: 0.0 - 150.0 mg/dL | source: CDC | url: https://www.cdc.gov/cholesterol/prevention/index.html
+T3 | range: 80.0 - 200.0 ng/dL | source: NHS | url: https://www.nhs.uk/conditions/underactive-thyroid-hypothyroidism/diagnosis/
+T4 | range: 5.0 - 12.0 ug/dL | source: NHS | url: https://www.nhs.uk/conditions/underactive-thyroid-hypothyroidism/diagnosis/
+TSH | range: 0.4 - 4.0 mIU/L | source: NHS | url: https://www.nhs.uk/conditions/underactive-thyroid-hypothyroidism/diagnosis/
+Urine Protein | range: 0.0 - 0.0 negative | source: NHS | url: https://www.nhs.uk/conditions/urine-test/
+Urine Glucose | range: 0.0 - 0.0 negative | source: NHS | url: https://www.nhs.uk/conditions/urine-test/
+Pus Cells | range: 0.0 - 5.0 /hpf | source: NHS | url: https://www.nhs.uk/conditions/urinary-tract-infections-utis/
+
