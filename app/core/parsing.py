@@ -1,10 +1,16 @@
+import logging
 import re
 from typing import Any
 
 from app.core.report_catalog import get_parameter_definitions
+from app.structure.matcher import match_parameter
+from app.structure.templates import load_templates
+from app.structure.utils import normalize_text
 
-RANGE_PATTERN = re.compile(r"(-?\d+(?:\.\d+)?)\s*(?:-|to|–|—)\s*(-?\d+(?:\.\d+)?)")
+RANGE_PATTERN = re.compile(r"(-?\d+(?:\.\d+)?)\s*(?:-|to|\u2013|\u2014)\s*(-?\d+(?:\.\d+)?)")
 VALUE_PATTERN = re.compile(r"(?<![A-Za-z])(-?\d+(?:\.\d+)?)(?![A-Za-z])")
+
+logger = logging.getLogger(__name__)
 
 STOPWORDS = {
     "name",
@@ -19,6 +25,12 @@ STOPWORDS = {
     "collected",
     "reported",
     "id",
+}
+
+SECTION_HEADERS = {
+    "haematology": ("haematology", "hematology"),
+    "biochemistry": ("biochemistry",),
+    "clinical_pathology": ("clinical pathology",),
 }
 
 
@@ -49,7 +61,6 @@ def _extract_value_unit_range(line: str, alias: str) -> dict[str, Any] | None:
         return None
 
     value = float(value_match.group(1))
-    absolute_value_start = alias_start + len(alias) + value_match.start()
     absolute_value_end = alias_start + len(alias) + value_match.end()
 
     range_match = RANGE_PATTERN.search(line)
@@ -132,6 +143,29 @@ def _generic_parse(line: str) -> dict[str, Any] | None:
     }
 
 
+def _detect_section(line: str) -> str | None:
+    normalized = normalize_text(line)
+    for section_name, keywords in SECTION_HEADERS.items():
+        if any(keyword in normalized for keyword in keywords):
+            return section_name
+    return None
+
+
+def _canonicalize_template_parameter(parameter_name: str, definitions: list[Any]) -> str:
+    normalized_target = normalize_text(parameter_name)
+    if not normalized_target:
+        return ""
+
+    for definition in definitions:
+        canonical_name = normalize_text(definition.parameter)
+        aliases = {normalize_text(alias) for alias in definition.aliases}
+        aliases.add(canonical_name)
+        if normalized_target in aliases:
+            return definition.parameter
+
+    return parameter_name.strip()
+
+
 def parse_parameters_from_text(text: str, report_type: str) -> list[dict[str, Any]]:
     lines = [clean_line(line) for line in text.splitlines()]
     lines = [line for line in lines if line]
@@ -139,13 +173,69 @@ def parse_parameters_from_text(text: str, report_type: str) -> list[dict[str, An
     parsed: list[dict[str, Any]] = []
     seen_parameters: set[str] = set()
     definitions = get_parameter_definitions(report_type)
+    templates = load_templates()
+    current_section = ""
 
     for line in lines:
+        detected_section = _detect_section(line)
+        if detected_section:
+            current_section = detected_section
+
         if not _looks_like_measurement_line(line):
             continue
 
         matched = False
         lowered = line.lower()
+        template_result: dict[str, Any] | None = None
+
+        try:
+            template_result = match_parameter(line, templates, current_section)
+        except Exception:
+            logger.exception("FALLBACK_USED matcher exception for line='%s'", line)
+            template_result = None
+
+        if template_result is not None:
+            parameter = _canonicalize_template_parameter(
+                str(template_result.get("parameter", "")),
+                definitions,
+            )
+            if parameter and parameter not in seen_parameters:
+                ranges = template_result.get("ranges") or []
+                range_text = ""
+                minimum = None
+                maximum = None
+                if isinstance(ranges, list) and ranges:
+                    first_range = ranges[0]
+                    if isinstance(first_range, (list, tuple)) and len(first_range) == 2:
+                        minimum = float(first_range[0])
+                        maximum = float(first_range[1])
+                        range_text = f"{minimum} - {maximum}"
+
+                parsed.append(
+                    {
+                        "parameter": parameter,
+                        "value": float(template_result.get("value", 0.0)),
+                        "unit": str(template_result.get("unit", "")).strip(),
+                        "reference_range": range_text,
+                        "min": minimum,
+                        "max": maximum,
+                    }
+                )
+                seen_parameters.add(parameter)
+                logger.info(
+                    "MATCHED_TEMPLATE parameter='%s' confidence=%s line='%s'",
+                    parameter,
+                    template_result.get("confidence"),
+                    line,
+                )
+                matched = True
+            else:
+                logger.info("FALLBACK_USED template duplicate/invalid line='%s'", line)
+        else:
+            logger.info("FALLBACK_USED line='%s'", line)
+
+        if matched:
+            continue
 
         for definition in definitions:
             selected_alias = next((alias for alias in definition.aliases if alias in lowered), None)
@@ -179,6 +269,7 @@ def parse_parameters_from_text(text: str, report_type: str) -> list[dict[str, An
 
         generic = _generic_parse(line)
         if not generic:
+            logger.info("UNMATCHED_LINE line='%s'", line)
             continue
         if generic["parameter"] in seen_parameters:
             continue
@@ -187,4 +278,3 @@ def parse_parameters_from_text(text: str, report_type: str) -> list[dict[str, An
         seen_parameters.add(generic["parameter"])
 
     return parsed
-

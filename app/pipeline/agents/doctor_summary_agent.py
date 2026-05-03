@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import logging
+
 from app.llm.generator import get_free_llm
+from app.mcp import get_mcp_server
 from app.pipeline.state import PipelineState
+
+logger = logging.getLogger(__name__)
 
 
 def _fallback_doctor_summary(state: PipelineState) -> str:
@@ -39,6 +44,7 @@ def _fallback_doctor_summary(state: PipelineState) -> str:
 def doctor_summary_agent(state: PipelineState) -> PipelineState:
     fallback = _fallback_doctor_summary(state)
     llm = get_free_llm()
+    mcp = get_mcp_server()
     prompt = (
         "Create a concise clinical-style summary of only abnormal findings with line breaks.\n"
         "Use this format:\n"
@@ -48,9 +54,27 @@ def doctor_summary_agent(state: PipelineState) -> PipelineState:
         "No diagnosis.\n"
         f"Findings: {[row for row in state.get('analyzed_rows', []) if row.get('status') != 'NORMAL']}"
     )
-    summary = llm.generate(
-        "You summarize lab abnormalities for clinicians in concise style. No diagnosis.",
-        prompt,
-        fallback,
-    )
+    system_prompt = "You summarize lab abnormalities for clinicians in concise style. No diagnosis."
+    try:
+        summary_result = mcp.execute_tool(
+            "generate_text_tool",
+            {
+                "system_prompt": system_prompt,
+                "user_prompt": prompt,
+                "fallback_text": fallback,
+            },
+        )
+        summary = str(summary_result.get("summary", "")).strip() or llm.generate(
+            system_prompt,
+            prompt,
+            fallback,
+        )
+    except Exception:
+        logger.exception("generate_text_tool failed for doctor_summary_agent. Falling back.")
+        summary = llm.generate(
+            system_prompt,
+            prompt,
+            fallback,
+        )
+
     return {"doctor_summary": summary}

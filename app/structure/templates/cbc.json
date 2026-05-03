@@ -1,0 +1,47 @@
+{
+  "report_type": "cbc",
+  "sections": {
+    "haematology": [
+      {
+        "name": "hemoglobin",
+        "aliases": [
+          "hemoglobin",
+          "haemoglobin",
+          "hb"
+        ],
+        "units": [
+          "gm/dl",
+          "g/dl"
+        ],
+        "ranges": [
+          [
+            13.0,
+            18.0
+          ],
+          [
+            12.0,
+            15.0
+          ]
+        ]
+      },
+      {
+        "name": "rbc",
+        "aliases": [
+          "rbc",
+          "red blood cell",
+          "red blood cells"
+        ],
+        "units": [
+          "/cmm",
+          "million/cmm"
+        ],
+        "ranges": [
+          [
+            4.5,
+            5.9
+          ]
+        ]
+      }
+    ]
+  }
+}

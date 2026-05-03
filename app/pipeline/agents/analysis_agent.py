@@ -1,14 +1,20 @@
 from __future__ import annotations
 
+import logging
+
 from app.core.analysis import classify_value, format_range, parse_range_string
+from app.mcp import get_mcp_server
 from app.pipeline.state import PipelineState
 from app.rag.range_resolver import resolve_range_from_rag
 from app.rag.vectorstore import get_vector_store
+
+logger = logging.getLogger(__name__)
 
 
 def analysis_agent(state: PipelineState) -> PipelineState:
     parsed_rows = state.get("parsed_rows", [])
     vector_store = get_vector_store()
+    mcp = get_mcp_server()
     analyzed_rows: list[dict] = []
 
     for row in parsed_rows:
@@ -22,7 +28,17 @@ def analysis_agent(state: PipelineState) -> PipelineState:
 
         parsed_range = parse_range_string(range_text)
         if not parsed_range:
-            resolved = resolve_range_from_rag(parameter, vector_store)
+            resolved = None
+            try:
+                mcp_result = mcp.execute_tool(
+                    "resolve_range_tool",
+                    {"parameter_name": parameter},
+                )
+                resolved = mcp_result.get("range")
+            except Exception:
+                logger.exception("resolve_range_tool failed for '%s'. Falling back.", parameter)
+                resolved = resolve_range_from_rag(parameter, vector_store)
+
             if resolved:
                 minimum = float(resolved["minimum"])
                 maximum = float(resolved["maximum"])
@@ -38,7 +54,23 @@ def analysis_agent(state: PipelineState) -> PipelineState:
                 source_name = "Standard medical reference"
 
         if parsed_range:
-            status = classify_value(value, parsed_range[0], parsed_range[1])
+            try:
+                status_result = mcp.execute_tool(
+                    "classify_value_tool",
+                    {
+                        "value": value,
+                        "minimum": parsed_range[0],
+                        "maximum": parsed_range[1],
+                    },
+                )
+                status = str(status_result.get("status", "")).strip() or classify_value(
+                    value,
+                    parsed_range[0],
+                    parsed_range[1],
+                )
+            except Exception:
+                logger.exception("classify_value_tool failed for '%s'. Falling back.", parameter)
+                status = classify_value(value, parsed_range[0], parsed_range[1])
         else:
             status = "NORMAL"
             if not range_text:

@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import logging
+
 from app.llm.generator import get_free_llm
+from app.mcp import get_mcp_server
 from app.pipeline.state import PipelineState
+
+logger = logging.getLogger(__name__)
 
 
 DEFAULT_EXPLANATIONS = {
@@ -117,6 +122,7 @@ def _build_fallback_summary(state: PipelineState) -> str:
 def explanation_agent(state: PipelineState) -> PipelineState:
     fallback_summary = _build_fallback_summary(state)
     llm = get_free_llm()
+    mcp = get_mcp_server()
 
     abnormal_rows = [row for row in state.get("analyzed_rows", []) if row.get("status") != "NORMAL"]
     user_prompt = (
@@ -134,5 +140,22 @@ def explanation_agent(state: PipelineState) -> PipelineState:
         "Do not diagnose. Do not prescribe medicines."
     )
 
-    summary = llm.generate(system_prompt, user_prompt, fallback_summary)
+    try:
+        summary_result = mcp.execute_tool(
+            "generate_text_tool",
+            {
+                "system_prompt": system_prompt,
+                "user_prompt": user_prompt,
+                "fallback_text": fallback_summary,
+            },
+        )
+        summary = str(summary_result.get("summary", "")).strip() or llm.generate(
+            system_prompt,
+            user_prompt,
+            fallback_summary,
+        )
+    except Exception:
+        logger.exception("generate_text_tool failed for explanation_agent. Falling back.")
+        summary = llm.generate(system_prompt, user_prompt, fallback_summary)
+
     return {"patient_summary": summary}

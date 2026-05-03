@@ -1,0 +1,23 @@
+{
+  "report_type": "urine",
+  "sections": {
+    "clinical_pathology": [
+      {
+        "name": "pus cells",
+        "aliases": [
+          "pus cells",
+          "pus cell"
+        ],
+        "units": [
+          "/hpf"
+        ],
+        "ranges": [
+          [
+            0.0,
+            5.0
+          ]
+        ]
+      }
+    ]
+  }
+}

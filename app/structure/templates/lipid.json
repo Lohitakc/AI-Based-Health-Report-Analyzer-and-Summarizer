@@ -1,0 +1,23 @@
+{
+  "report_type": "lipid",
+  "sections": {
+    "biochemistry": [
+      {
+        "name": "cholesterol",
+        "aliases": [
+          "cholesterol",
+          "total cholesterol"
+        ],
+        "units": [
+          "mg/dl"
+        ],
+        "ranges": [
+          [
+            125.0,
+            200.0
+          ]
+        ]
+      }
+    ]
+  }
+}

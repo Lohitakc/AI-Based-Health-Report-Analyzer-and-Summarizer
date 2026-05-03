@@ -1,0 +1,24 @@
+{
+  "report_type": "glucose",
+  "sections": {
+    "biochemistry": [
+      {
+        "name": "fasting glucose",
+        "aliases": [
+          "fasting glucose",
+          "fasting blood sugar",
+          "fbs"
+        ],
+        "units": [
+          "mg/dl"
+        ],
+        "ranges": [
+          [
+            70.0,
+            100.0
+          ]
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "report_type": "thyroid",
+  "sections": {
+    "biochemistry": [
+      {
+        "name": "tsh",
+        "aliases": [
+          "tsh",
+          "thyroid stimulating hormone"
+        ],
+        "units": [
+          "uiu/ml",
+          "µiu/ml"
+        ],
+        "ranges": [
+          [
+            0.4,
+            4.0
+          ]
+        ]
+      }
+    ]
+  }
+}
